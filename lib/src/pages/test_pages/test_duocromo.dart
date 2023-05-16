@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class DuocromoPage extends StatelessWidget {
-  const DuocromoPage({super.key});
+  const DuocromoPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test Bicromático'),
@@ -18,13 +21,48 @@ class DuocromoPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('data/assets/images/test_bicromo/biocromo.jpg'),
-          ),
+      body: Container( 
+        color: Colors.red,
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).padding.top),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    for (var i = 1; i <= 9; i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(
+                          i+2,
+                          (index) {
+                            final fontSize = screenWidth / (i * 2) - (i == 8 ? 8 : 0);
+                            return Expanded(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    String.fromCharCode(Random().nextInt(26) + 65),
+                                    style: TextStyle(
+                                      fontFamily: 'OpticianSans',
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                    ), 
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
